@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Analyzer | AI Interview Prep{% endblock %}
+
+{% block content %}
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div style="margin-bottom: 1.5rem; padding-left: 0.5rem;">
+      <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700; letter-spacing: 0.05em;">Navigation</span>
+    </div>
+    <ul class="sidebar-nav">
+      <li>
+        <a href="{{ url_for('dashboard.dashboard') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('interview.setup') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start Interview
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('history.history') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Interview History
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('assistant.assistant') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          AI Interview Assistant
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('resume.analyzer') }}" class="sidebar-link active">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Resume Analyzer
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('profile.profile') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Candidate Profile
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <form action="{{ url_for('auth.logout') }}" method="POST">
+        <button type="submit" class="sidebar-link" style="width: 100%; border: none; background: transparent; cursor: pointer; color: var(--danger);">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="main-content">
+    <div style="margin-bottom: 2rem;">
+      <span class="badge badge-primary" style="margin-bottom: 0.35rem;">Skill Alignment Diagnostic</span>
+      <h1 style="font-size: 1.85rem;">Placement Resume Analyzer</h1>
+      <p>Upload your PDF resume to extract skills, compare against target job roles, and receive actionable enhancements.</p>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <form method="POST" action="{{ url_for('resume.analyze') }}" enctype="multipart/form-data">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: flex-end;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="resume-file" class="form-label">Upload Resume (PDF format, max 5MB)</label>
+            <input 
+              type="file" 
+              id="resume-file" 
+              name="resume" 
+              accept=".pdf" 
+              class="form-control" 
+              required
+            >
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="target-role" class="form-label">Target Role Benchmark</label>
+            <select name="target_role" id="target-role" class="form-control">
+              <option value="Python Developer" selected>Python Developer</option>
+              <option value="AI/ML Engineer">AI/ML Engineer</option>
+              <option value="Data Analyst">Data Analyst</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.8rem; color: var(--text-dim);">
+            <em>Processed safely in memory. Files are never stored permanently on disk.</em>
+          </span>
+          <button type="submit" class="btn btn-cyan">
+            Analyze Resume Match &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Results Display if Analysis Just Run -->
+    {% if result %}
+      <div class="card" style="border-color: rgba(6, 182, 212, 0.4); margin-bottom: 2rem; background: rgba(15, 23, 42, 0.8);">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--dark-border); padding-bottom: 1rem;">
+          <div>
+            <span class="badge badge-cyan" style="margin-bottom: 0.25rem;">Analysis Complete</span>
+            <h3 class="card-title">{{ filename }} &bull; Target: {{ result.target_role }}</h3>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Benchmark Match</span>
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--cyan);">
+              {{ result.match_score }}%
+            </div>
+          </div>
+        </div>
+
+        <!-- Detected vs Missing Skills -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+          <div style="background: rgba(30, 41, 59, 0.5); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--dark-border);">
+            <strong style="color: #86EFAC; font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">
+              &check; Detected Technical Keywords ({{ result.detected_skills|length }})
+            </strong>
+            <div class="concept-chips-wrap">
+              {% for s in result.detected_skills %}
+                <span class="concept-chip chip-success">{{ s }}</span>
+              {% else %}
+                <span style="font-size: 0.85rem; color: var(--text-dim);">No target role keywords matched yet.</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div style="background: rgba(30, 41, 59, 0.5); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--dark-border);">
+            <strong style="color: #FCA5A5; font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">
+              &times; Target Keywords Missing in Resume ({{ result.missing_skills|length }})
+            </strong>
+            <div class="concept-chips-wrap">
+              {% for s in result.missing_skills %}
+                <span class="concept-chip chip-danger">{{ s }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div>
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--text-main);">Resume Optimization Suggestions:</h4>
+          {% for sug in result.suggestions %}
+            <div class="recommendation-item">
+              {{ sug }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Past Analyses History -->
+    {% if previous_analyses %}
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 1rem;">Recent Resume Diagnostic Logs</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>File Name</th>
+                <th>Target Role</th>
+                <th>Match Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in previous_analyses %}
+                <tr>
+                  <td>{{ format_datetime(item.created_at) }}</td>
+                  <td><strong>{{ item.filename }}</strong></td>
+                  <td>{{ item.target_role }}</td>
+                  <td>
+                    <span class="badge {{ get_score_badge_class(item.match_score) }}">
+                      {{ item.match_score }}%
+                    </span>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}

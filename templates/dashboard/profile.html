@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Candidate Profile | AI Interview Prep{% endblock %}
+
+{% block content %}
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div style="margin-bottom: 1.5rem; padding-left: 0.5rem;">
+      <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700; letter-spacing: 0.05em;">Navigation</span>
+    </div>
+    <ul class="sidebar-nav">
+      <li>
+        <a href="{{ url_for('dashboard.dashboard') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('interview.setup') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start Interview
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('history.history') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Interview History
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('assistant.assistant') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          AI Interview Assistant
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('resume.analyzer') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Resume Analyzer
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('profile.profile') }}" class="sidebar-link active">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Candidate Profile
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <form action="{{ url_for('auth.logout') }}" method="POST">
+        <button type="submit" class="sidebar-link" style="width: 100%; border: none; background: transparent; cursor: pointer; color: var(--danger);">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="main-content">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 1.85rem;">Candidate Profile</h1>
+      <p>Account identity, placement preparedness benchmarks, and credentials overview.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; margin-bottom: 2rem;">
+      <!-- Profile Card -->
+      <div class="card" style="text-align: center;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--cyan)); display: flex; align-items: center; justify-content: center; font-size: 2.25rem; font-weight: 700; color: #FFFFFF; margin: 0 auto 1.25rem;">
+          {{ user.name[0] | upper }}
+        </div>
+        <h3 style="margin-bottom: 0.25rem;">{{ user.name }}</h3>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">{{ user.email }}</p>
+        <span class="badge badge-cyan">MCA Candidate</span>
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--dark-border-subtle); font-size: 0.8rem; color: var(--text-dim); text-align: left;">
+          <div><strong>Registered:</strong> {{ format_datetime(user.created_at) }}</div>
+          <div style="margin-top: 0.4rem;"><strong>Auth Level:</strong> Password Hashed (PBKDF2/SHA-256)</div>
+        </div>
+      </div>
+
+      <!-- Placement Metrics Summary -->
+      <div class="card">
+        <h3 style="margin-bottom: 1rem; color: var(--cyan);">Placement Benchmark Overview</h3>
+        <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 1.5rem;">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">📋</div>
+            <div class="metric-data">
+              <h4>Interviews Finished</h4>
+              <div class="metric-value">{{ total_interviews }}</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">💬</div>
+            <div class="metric-data">
+              <h4>Questions Answered</h4>
+              <div class="metric-value">{{ total_answers }}</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-cyan">🎯</div>
+            <div class="metric-data">
+              <h4>Average Score</h4>
+              <div class="metric-value">{{ avg_score }}%</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-green">🏆</div>
+            <div class="metric-data">
+              <h4>Peak Score</h4>
+              <div class="metric-value">{{ best_score }}%</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--dark-border);">
+          <strong style="color: var(--text-main); font-size: 0.9rem;">Portfolio Project Notice:</strong>
+          <p style="font-size: 0.85rem; margin-top: 0.25rem;">
+            This profile and all interview evaluations are managed under the <strong>AI-Powered Interview Preparation & Evaluation System</strong> developed by <strong>Jerusha Pamella Felix M.</strong> for MCA campus placements.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

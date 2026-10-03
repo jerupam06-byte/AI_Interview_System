@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}About & Placement Architecture | AI-Powered Interview System{% endblock %}
+
+{% block content %}
+<div class="container container-narrow" style="padding: 3rem 1.5rem 5rem;">
+  <div style="margin-bottom: 2.5rem; text-align: center;">
+    <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Placement Portfolio Specification</span>
+    <h1>System Architecture & Design Decisions</h1>
+    <p>Everything the developer must be able to explain in technical placement interviews.</p>
+  </div>
+
+  <div class="card" style="margin-bottom: 2rem;">
+    <h3 style="color: var(--cyan); margin-bottom: 1rem;">1. Project Overview & Motivation</h3>
+    <p style="margin-bottom: 1rem;">
+      The <strong>AI-Powered Interview Preparation & Evaluation System</strong> is an end-to-end full-stack web application developed by <strong>Jerusha Pamella Felix M.</strong> for MCA campus placements. Unlike simplistic CRUD applications, this project demonstrates algorithmic NLP, transparent weighted evaluation, asynchronous speech interaction, and persistent analytics.
+    </p>
+  </div>
+
+  <div class="card" style="margin-bottom: 2rem;">
+    <h3 style="color: var(--cyan); margin-bottom: 1rem;">2. Core Evaluation Algorithm</h3>
+    <p style="margin-bottom: 1rem;">
+      Instead of relying on an opaque external black box for numeric grades, the core evaluation engine implements deterministic Natural Language Processing (NLP):
+    </p>
+    <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.25rem;">
+      <li><strong>TF-IDF Vectorization:</strong> Uses scikit-learn's <code>TfidfVectorizer</code> to convert candidate and expected answers into numerical sparse vectors with unigrams and bigrams, discounting ubiquitous English stop-words.</li>
+      <li><strong>Cosine Similarity (60% weight):</strong> Measures the cosine of the angle between the normalized vectors in high-dimensional feature space, representing semantic alignment.</li>
+      <li><strong>Boundary-Aware Keyword Matching (20% weight):</strong> Performs regex-based whole-word and multi-word phrase matching (e.g. <em>"global interpreter lock"</em>, <em>"window functions"</em>) to guarantee technical rigor.</li>
+      <li><strong>Answer Completeness & Coherence (10% weight):</strong> Inspects structural sentence boundaries and logical connectors (<em>"because"</em>, <em>"for example"</em>, <em>"therefore"</em>).</li>
+      <li><strong>Length Sanity Check (10% weight):</strong> Guards against overly terse or one-word answers, ensuring substantive depth. Empty answers receive strictly 0.</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom: 2rem;">
+    <h3 style="color: var(--cyan); margin-bottom: 1rem;">3. Differentiating Feature: Interview Gap Detector</h3>
+    <p style="margin-bottom: 1rem;">
+      Most mock interview tools provide a numeric score and stop there. Our system features the <strong>Interview Gap Detector</strong>:
+    </p>
+    <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8;">
+      <li>Extracts demonstrated concepts vs. missing keywords across every answered question.</li>
+      <li>Maps weaknesses into skill categories (Python, SQL & Databases, Machine Learning, NLP, Data Analysis, HR Communication).</li>
+      <li>Renders a visual <strong>Skill-Gap Map</strong> highlighting <em>Mastered Concepts</em>, <em>Developing Areas</em>, and <em>High-Priority Critical Gaps</em>.</li>
+      <li>Generates a targeted revision checklist so candidates can convert test results directly into actionable study plans.</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom: 2rem;">
+    <h3 style="color: var(--cyan); margin-bottom: 1rem;">4. Technology Stack & Rationale</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">
+      <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--dark-border);">
+        <strong style="color: #60A5FA;">Backend: Flask (Python)</strong>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Lightweight, modular WSGI framework allowing clean separation of routes, services, and models without bloat.</p>
+      </div>
+      <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--dark-border);">
+        <strong style="color: #22D3EE;">NLP: scikit-learn</strong>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Fast, deterministic, self-contained vectorization and cosine similarity calculations.</p>
+      </div>
+      <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--dark-border);">
+        <strong style="color: #4ADE80;">Database: PostgreSQL & SQLite</strong>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Full SQLAlchemy ORM abstraction. Seamless local SQLite testing and hosted PostgreSQL (Neon) in production.</p>
+      </div>
+      <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--dark-border);">
+        <strong style="color: #FCD34D;">Deployment: Vercel</strong>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Serverless WSGI deployment with zero configuration and ephemeral stateless handling.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color: var(--cyan); margin-bottom: 1rem;">5. Security & Graceful Fallback Strategy</h3>
+    <p style="margin-bottom: 1rem;">
+      All user passwords are encrypted using Werkzeug's secure PBKDF2/SHA256 salted hashing. Authentication sessions are protected with HTTPOnly cookies. If OpenAI API keys are not supplied or experience network rate limits, the system seamlessly triggers its internal deterministic feedback engine, guaranteeing that the application never crashes during live demonstrations.
+    </p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Question {{ question_index }} of {{ total_questions }} | {{ interview.role }} Interview{% endblock %}
+
+{% block content %}
+<div class="container interview-container" style="padding: 2.5rem 1.5rem 5rem;">
+  
+  <!-- Header Bar -->
+  <div class="interview-header">
+    <div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+        <span class="badge badge-primary">{{ interview.role }}</span>
+        <span class="badge {% if question.difficulty == 'Hard' %}badge-danger{% elif question.difficulty == 'Medium' %}badge-warning{% else %}badge-cyan{% endif %}">
+          {{ question.difficulty }}
+        </span>
+        <span class="badge badge-secondary">{{ question.category }}</span>
+        {% if is_real_mode %}
+          <span class="badge badge-danger">Real Interview Mode</span>
+        {% else %}
+          <span class="badge badge-cyan">Practice Mode</span>
+        {% endif %}
+      </div>
+      <h2 style="font-size: 1.4rem;">Question {{ question_index }} of {{ total_questions }}</h2>
+    </div>
+
+    <!-- Timer / Mode Info -->
+    <div style="text-align: right;">
+      {% if is_real_mode %}
+        <div id="timer-badge" class="timer-badge" title="Time remaining for this question">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="timer-text">2:00</span>
+        </div>
+      {% else %}
+        <span style="font-size: 0.85rem; color: var(--text-dim);">No time limit</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-track" aria-label="Interview Progress">
+    <div class="progress-fill" style="width: {{ progress_percent }}%;"></div>
+  </div>
+
+  <!-- Question Prompt Card -->
+  <div class="question-card">
+    <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--cyan); letter-spacing: 0.05em;">
+      Topic: {{ question.topic }}
+    </span>
+    <h3 class="question-text">{{ question.question }}</h3>
+    {% if not is_real_mode and question.explanation %}
+      <div style="margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(15, 23, 42, 0.4); border-left: 3px solid var(--primary); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-muted);">
+        <strong style="color: var(--text-main);">Guidance Note:</strong> {{ question.explanation }}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Answer Form -->
+  <form 
+    id="answer-form" 
+    method="POST" 
+    action="{{ url_for('interview.submit_answer', id=interview.id) }}"
+    data-interview-id="{{ interview.id }}"
+    data-question-id="{{ question.id }}"
+    data-real-mode="{{ 'true' if is_real_mode else 'false' }}"
+    data-time-limit="120"
+  >
+    <input type="hidden" name="question_id" value="{{ question.id }}">
+
+    <div class="answer-input-area">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <label for="answer-input" class="form-label" style="margin-bottom: 0; font-size: 0.95rem;">
+          Your Answer:
+        </label>
+        
+        <!-- Voice Input Control -->
+        <button type="button" id="voice-btn" class="btn-voice" title="Speak to dictate your response">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          Voice Answer
+        </button>
+      </div>
+
+      <textarea 
+        id="answer-input" 
+        name="answer_text" 
+        class="answer-textarea" 
+        placeholder="Type or dictate your answer here. Provide technical depth, operational mechanisms, and concrete examples..."
+        required
+      ></textarea>
+
+      <!-- Toolbar / Status -->
+      <div class="input-toolbar">
+        <div>
+          <span id="voice-status" style="font-size: 0.8rem; color: var(--cyan);">Voice input ready</span>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <span id="word-count" style="font-family: monospace;">0 words</span>
+          <span style="font-size: 0.75rem; color: var(--text-dim);">(Ctrl + Enter to Submit)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation / Action Buttons -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+      <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-outline btn-sm" onclick="return confirm('Are you sure you want to pause this session? You can resume anytime from your dashboard.');">
+        Pause Session
+      </a>
+
+      <button type="submit" id="submit-btn" class="btn btn-primary btn-lg">
+        <span>Submit Answer & {% if question_index == total_questions %}Finish Interview{% else %}Next Question &rarr;{% endif %}</span>
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+<script src="{{ url_for('static', filename='js/interview.js') }}"></script>
+{% endblock %}

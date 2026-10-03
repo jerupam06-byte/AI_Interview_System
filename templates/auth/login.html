@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In | AI Interview Prep{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Placement Portal</span>
+      <h1>Welcome Back</h1>
+      <p>Log in to access your interview sessions, analytics & AI coach.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          class="form-control" 
+          placeholder="student@example.com" 
+          value="{{ email or '' }}"
+          required 
+          autocomplete="email"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-control" 
+          placeholder="••••••••" 
+          required 
+          autocomplete="current-password"
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem;">
+        Sign In to Account
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Don't have an account yet? 
+      <a href="{{ url_for('auth.register') }}">Create an account</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

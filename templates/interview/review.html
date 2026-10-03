@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Detailed Answer Review | Session #{{ interview.id }}{% endblock %}
+
+{% block content %}
+<div class="container container-wide" style="padding: 3rem 1.5rem 5rem;">
+  
+  <!-- Header -->
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div>
+      <a href="{{ url_for('interview.result', id=interview.id) }}" style="font-size: 0.85rem; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 0.5rem;">
+        &larr; Back to Results & Gap Map
+      </a>
+      <h1>Comparative Question & Answer Review</h1>
+      <p>Side-by-side evaluation comparing your candidate response with the benchmark answer.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="{{ url_for('interview.setup') }}" class="btn btn-primary">Start New Session</a>
+      <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-outline">Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Loop through each answer -->
+  {% for ans in answers %}
+    {% set fb = ans.get_feedback_dict() %}
+    {% set q = ans.question %}
+    {% set kws = q.get_keywords_list() %}
+    <div class="card" id="q-{{ ans.id }}" style="margin-bottom: 2.5rem; padding: 2rem;">
+      
+      <!-- Question Title Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--dark-border); margin-bottom: 1.5rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+            <span class="badge badge-primary">Question {{ loop.index }}</span>
+            <span class="badge badge-secondary">{{ q.topic }}</span>
+            <span class="badge {% if q.difficulty == 'Hard' %}badge-danger{% elif q.difficulty == 'Medium' %}badge-warning{% else %}badge-cyan{% endif %}">{{ q.difficulty }}</span>
+          </div>
+          <h3 style="font-size: 1.25rem; color: #FFFFFF;">{{ q.question }}</h3>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Awarded Score</span>
+          <div style="font-size: 1.85rem; font-weight: 800; color: {% if ans.final_question_score >= 75 %}var(--success){% elif ans.final_question_score >= 50 %}var(--warning){% else %}var(--danger){% endif %};">
+            {{ ans.final_question_score }}%
+          </div>
+        </div>
+      </div>
+
+      <!-- Side-by-Side Candidate vs Expected Answers -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+        <!-- Candidate Response -->
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--dark-border); border-radius: var(--radius-lg); padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <strong style="color: var(--text-main); font-size: 0.9rem;">Your Answer:</strong>
+            <span class="badge badge-cyan">Similarity: {{ ans.similarity_score }}%</span>
+          </div>
+          <p style="font-size: 0.95rem; color: #F8FAFC; white-space: pre-wrap; line-height: 1.6;">
+            {% if ans.answer_text %}
+              {{ ans.answer_text }}
+            {% else %}
+              <em style="color: var(--danger);">[No answer was submitted for this question]</em>
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Expected Benchmark Answer -->
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--dark-border); border-radius: var(--radius-lg); padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <strong style="color: var(--cyan); font-size: 0.9rem;">Model Benchmark Answer:</strong>
+            <span class="badge badge-primary">Standard</span>
+          </div>
+          <p style="font-size: 0.95rem; color: #E2E8F0; line-height: 1.6;">
+            {{ q.expected_answer }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Keyword Analysis Chips -->
+      <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid var(--dark-border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+        <div style="margin-bottom: 0.75rem; font-size: 0.85rem; font-weight: 600; color: var(--text-main);">
+          Key Technical Terminology (Coverage Score: {{ ans.keyword_score }}%)
+        </div>
+        <div class="concept-chips-wrap">
+          {% for kw in kws %}
+            {% set kw_lower = kw.lower() %}
+            {% set ans_lower = (ans.answer_text or '').lower() %}
+            {% if kw_lower in ans_lower %}
+              <span class="concept-chip chip-success" title="Matched in candidate answer">
+                &check; {{ kw }}
+              </span>
+            {% else %}
+              <span class="concept-chip chip-danger" title="Omitted from candidate answer">
+                &times; {{ kw }}
+              </span>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- AI-Assisted Qualitative Feedback -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+        <!-- Strengths -->
+        <div style="background: rgba(34, 197, 94, 0.08); border-left: 3px solid var(--success); border-radius: var(--radius-sm); padding: 1rem;">
+          <strong style="color: #86EFAC; font-size: 0.85rem; text-transform: uppercase;">Strengths Observed:</strong>
+          <ul style="margin-top: 0.5rem; padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+            {% for s in fb.get('strengths', ['Response attempted to address the question prompt.']) %}
+              <li>{{ s }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Weaknesses -->
+        <div style="background: rgba(239, 68, 68, 0.08); border-left: 3px solid var(--danger); border-radius: var(--radius-sm); padding: 1rem;">
+          <strong style="color: #FCA5A5; font-size: 0.85rem; text-transform: uppercase;">Areas to Polish:</strong>
+          <ul style="margin-top: 0.5rem; padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+            {% for w in fb.get('weaknesses', ['Could incorporate more specific technical mechanisms.']) %}
+              <li>{{ w }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Improvement Suggestions -->
+        <div style="background: rgba(6, 182, 212, 0.08); border-left: 3px solid var(--cyan); border-radius: var(--radius-sm); padding: 1rem;">
+          <strong style="color: #67E8F9; font-size: 0.85rem; text-transform: uppercase;">Actionable Revision Advice:</strong>
+          <ul style="margin-top: 0.5rem; padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+            {% for rec in fb.get('suggestions', ['Practice expressing the trade-offs of this approach.']) %}
+              <li>{{ rec }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Suggested Improved Answer -->
+      {% if fb.get('improved_answer') %}
+        <div style="margin-top: 1.25rem; padding: 1rem; background: rgba(37, 99, 235, 0.1); border: 1px dashed rgba(37, 99, 235, 0.4); border-radius: var(--radius-md);">
+          <strong style="font-size: 0.85rem; color: #93C5FD; text-transform: uppercase;">Exemplary Model Response:</strong>
+          <p style="font-size: 0.9rem; color: #E2E8F0; margin-top: 0.35rem; margin-bottom: 0; line-height: 1.5;">
+            {{ fb.improved_answer }}
+          </p>
+        </div>
+      {% endif %}
+
+    </div>
+  {% endfor %}
+
+  <div style="text-align: center; margin-top: 2rem;">
+    <a href="{{ url_for('interview.result', id=interview.id) }}" class="btn btn-secondary btn-lg" style="margin-right: 1rem;">
+      Back to Results
+    </a>
+    <a href="{{ url_for('interview.setup') }}" class="btn btn-primary btn-lg">
+      Start Next Interview Track
+    </a>
+  </div>
+</div>
+{% endblock %}

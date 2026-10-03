@@ -1,0 +1,233 @@
+[
+  {
+    "id": 1,
+    "role": "Python Developer",
+    "difficulty": "Easy",
+    "category": "Technical",
+    "topic": "Python",
+    "question": "What is the difference between mutable and immutable data types in Python? Give examples of each.",
+    "expected_answer": "Mutable data types can be modified in place after creation without changing their memory address, such as lists, dictionaries, and sets. Immutable data types cannot be modified once created; any change creates a new object in memory, such as integers, floats, strings, and tuples.",
+    "keywords": ["mutable", "immutable", "lists", "dictionaries", "sets", "strings", "tuples", "memory address", "modified"],
+    "explanation": "Understanding object mutability is fundamental in Python to prevent unexpected side effects when passing arguments to functions or modifying shared data."
+  },
+  {
+    "id": 2,
+    "role": "Python Developer",
+    "difficulty": "Easy",
+    "category": "Technical",
+    "topic": "Python",
+    "question": "Explain what list comprehension is and why it is commonly used in Python.",
+    "expected_answer": "List comprehension provides a concise, readable syntax for creating new lists based on existing iterables. It combines a loop and an optional condition into a single line, such as [x*2 for x in nums if x > 0], offering faster execution compared to standard for loops because it is optimized in CPython bytecode.",
+    "keywords": ["list comprehension", "syntax", "iterable", "concise", "readable", "for loop", "optimized", "filter", "condition"],
+    "explanation": "List comprehensions are idiomatic Python and offer both cleaner code and slight performance gains over manual loop appends."
+  },
+  {
+    "id": 3,
+    "role": "Python Developer",
+    "difficulty": "Medium",
+    "category": "Technical",
+    "topic": "Python",
+    "question": "What is the Global Interpreter Lock (GIL) in Python, and how does it impact multi-threading?",
+    "expected_answer": "The Global Interpreter Lock (GIL) is a mutex in CPython that allows only one native thread to execute Python bytecode at a time, protecting memory management and reference counting. As a result, CPU-bound multi-threaded tasks do not achieve true parallelism; developers use multiprocessing or asynchronous programming (asyncio) to achieve concurrent execution.",
+    "keywords": ["global interpreter lock", "gil", "cpython", "mutex", "multi-threading", "parallelism", "cpu-bound", "multiprocessing", "bytecode", "reference counting"],
+    "explanation": "The GIL is a classic technical interview topic demonstrating deep understanding of CPython internals and concurrency limitations."
+  },
+  {
+    "id": 4,
+    "role": "Python Developer",
+    "difficulty": "Medium",
+    "category": "Technical",
+    "topic": "Python",
+    "question": "How do Python decorators work, and how would you implement a custom decorator?",
+    "expected_answer": "A decorator is a callable that takes another function as an argument, extends or modifies its behavior without altering its source code, and returns the modified function. Decorators use closures and the @decorator syntax. To implement one, you define an outer function returning an inner wrapper function that accepts *args and **kwargs, often using functools.wraps to preserve function metadata.",
+    "keywords": ["decorator", "wrapper", "closure", "higher-order function", "args", "kwargs", "functools", "wraps", "metadata"],
+    "explanation": "Decorators demonstrate first-class function concepts, closures, and metaprogramming in Python."
+  },
+  {
+    "id": 5,
+    "role": "Python Developer",
+    "difficulty": "Hard",
+    "category": "Technical",
+    "topic": "Python",
+    "question": "How does Python's memory management and garbage collection work, specifically regarding reference counting and cyclic references?",
+    "expected_answer": "Python uses reference counting as its primary memory management mechanism: each object tracks references to it, and when the count reaches zero, memory is immediately deallocated. To solve circular references where two objects reference each other and never reach zero, Python runs a generational cyclic garbage collector that periodically traverses object graphs using three generations (gen0, gen1, gen2) to detect and reclaim unreachable cycles.",
+    "keywords": ["memory management", "garbage collection", "reference counting", "cyclic references", "circular references", "generational", "deallocated", "gc module", "reachable"],
+    "explanation": "Generational cyclic garbage collection ensures Python does not leak memory when reference counting alone is insufficient."
+  },
+  {
+    "id": 6,
+    "role": "Python Developer",
+    "difficulty": "Easy",
+    "category": "HR / Behavioral",
+    "topic": "HR Communication",
+    "question": "Tell me about a challenging bug you encountered in a project and how you went about debugging and resolving it.",
+    "expected_answer": "In a recent project, I encountered an elusive bug where intermittent data corruption occurred during concurrent requests. I reproduced the issue locally, analyzed server logs, and used debugging tools to isolate the root cause to a shared mutable state. I fixed the issue by implementing immutable data patterns and thread-safe locks, then validated the solution with automated tests.",
+    "keywords": ["bug", "root cause", "debugging", "logs", "reproduced", "isolated", "testing", "resolution", "collaborated"],
+    "explanation": "The STAR (Situation, Task, Action, Result) method is ideal for answering behavioral debugging questions clearly."
+  },
+  {
+    "id": 7,
+    "role": "Python Developer",
+    "difficulty": "Medium",
+    "category": "HR / Behavioral",
+    "topic": "HR Communication",
+    "question": "How do you handle disagreements with team members or code reviewers regarding architectural decisions or code style?",
+    "expected_answer": "I handle disagreements by focusing on technical merits, project requirements, and industry best practices rather than personal preferences. I listen actively to understand the other person's perspective, refer to established standards such as PEP 8, test alternatives with benchmarks or prototypes, and if needed, seek consensus through team discussion or documentation.",
+    "keywords": ["disagreement", "code review", "best practices", "listen", "communication", "consensus", "pep 8", "objective", "collaboration"],
+    "explanation": "Demonstrates emotional intelligence, professional maturity, and team-first engineering mindset."
+  },
+  {
+    "id": 8,
+    "role": "Python Developer",
+    "difficulty": "Medium",
+    "category": "Mixed",
+    "topic": "SQL",
+    "question": "Explain how you optimize slow database queries in a Python web application using an ORM like SQLAlchemy.",
+    "expected_answer": "To optimize slow database queries, I start by enabling SQL query logging and profiling with EXPLAIN ANALYZE to identify sequential scans and bottle-necks. Common fixes include adding database indexes on filtered and joined columns, resolving N+1 query issues by using eager loading (joinedload or selectinload), fetching only required fields instead of entire models, and caching frequent read queries using Redis.",
+    "keywords": ["sqlalchemy", "optimize", "indexing", "n+1 problem", "eager loading", "explain analyze", "query logging", "caching", "join"],
+    "explanation": "Combines backend Python knowledge, ORM mechanics, and SQL database performance tuning."
+  },
+  {
+    "id": 9,
+    "role": "AI/ML Engineer",
+    "difficulty": "Easy",
+    "category": "Technical",
+    "topic": "Machine Learning",
+    "question": "What is the difference between supervised and unsupervised learning? Provide examples of algorithms for each.",
+    "expected_answer": "Supervised learning trains models on labeled datasets where each input has a corresponding target output, aiming to predict outcomes on unseen data; examples include Linear Regression, Random Forest, and Support Vector Machines. Unsupervised learning discovers hidden patterns, clusters, or representations in unlabeled data without predefined outputs; examples include K-Means clustering, PCA, and Hierarchical Clustering.",
+    "keywords": ["supervised", "unsupervised", "labeled data", "unlabeled data", "linear regression", "random forest", "k-means", "pca", "clustering", "classification"],
+    "explanation": "Core foundational concept in machine learning defining training paradigms."
+  },
+  {
+    "id": 10,
+    "role": "AI/ML Engineer",
+    "difficulty": "Medium",
+    "category": "Technical",
+    "topic": "Machine Learning",
+    "question": "Explain the bias-variance tradeoff and how it relates to overfitting and underfitting.",
+    "expected_answer": "The bias-variance tradeoff describes the conflict between minimizing two sources of error in machine learning models. High bias leads to underfitting because the model is too simple to capture underlying patterns, causing high error on both training and test data. High variance leads to overfitting because the model memorizes training noise, performing well on training data but poorly on test data. The goal is to find the optimal balance through regularization, cross-validation, and proper model complexity.",
+    "keywords": ["bias", "variance", "tradeoff", "overfitting", "underfitting", "regularization", "generalization", "cross-validation", "complexity"],
+    "explanation": "A central theoretical concept evaluated in virtually all ML engineer placement interviews."
+  },
+  {
+    "id": 11,
+    "role": "AI/ML Engineer",
+    "difficulty": "Medium",
+    "category": "Technical",
+    "topic": "NLP",
+    "question": "How does TF-IDF vectorization work, and how is it used to calculate cosine similarity between documents?",
+    "expected_answer": "TF-IDF (Term Frequency - Inverse Document Frequency) converts text into numerical feature vectors by weighting term frequency against the inverse document frequency of words across the corpus, diminishing common stop words while emphasizing discriminative keywords. Cosine similarity calculates the cosine of the angle between two normalized TF-IDF vectors, measuring semantic and lexical overlap from 0 (orthogonal, no similarity) to 1 (identical vector direction).",
+    "keywords": ["tf-idf", "term frequency", "inverse document frequency", "cosine similarity", "vectorization", "dot product", "numerical vector", "angle", "corpus"],
+    "explanation": "Directly matches the core NLP algorithm implemented in this very project!"
+  },
+  {
+    "id": 12,
+    "role": "AI/ML Engineer",
+    "difficulty": "Hard",
+    "category": "Technical",
+    "topic": "Deep Learning",
+    "question": "Explain the architecture of the Transformer model, focusing on the Multi-Head Self-Attention mechanism.",
+    "expected_answer": "The Transformer model relies on self-attention mechanisms without recurrent connections. Self-attention projects input embeddings into Query (Q), Key (K), and Value (V) matrices. Attention weights are computed via scaled dot-product: softmax((Q*K^T) / sqrt(d_k)) * V. Multi-Head Attention runs multiple attention heads in parallel, allowing the model to jointly attend to information from different representation subspaces and positions, followed by linear projection, residual connections, and layer normalization.",
+    "keywords": ["transformer", "self-attention", "multi-head", "query", "key", "value", "scaled dot-product", "softmax", "residual connection", "layer norm"],
+    "explanation": "Transformers form the backbone of modern large language models and advanced NLP systems."
+  },
+  {
+    "id": 13,
+    "role": "AI/ML Engineer",
+    "difficulty": "Easy",
+    "category": "HR / Behavioral",
+    "topic": "HR Communication",
+    "question": "How do you stay updated with rapidly evolving AI research, libraries, and best practices?",
+    "expected_answer": "I stay updated by reading newly published papers on arXiv and Papers With Code, following established AI conferences like NeurIPS and ICML, engaging with developer communities on GitHub and Hugging Face, and building hands-on side projects or benchmarks to experiment with emerging techniques and libraries directly.",
+    "keywords": ["arxiv", "papers with code", "conferences", "hugging face", "github", "hands-on projects", "continuous learning", "research"],
+    "explanation": "Shows curiosity, continuous learning habit, and active self-direction in an evolving field."
+  },
+  {
+    "id": 14,
+    "role": "AI/ML Engineer",
+    "difficulty": "Medium",
+    "category": "Mixed",
+    "topic": "Machine Learning",
+    "question": "When building an ML pipeline for production, how do you handle data drift and model degradation after deployment?",
+    "expected_answer": "To handle data drift and model degradation, I establish continuous monitoring for both input data distributions (covariate shift) and target metrics (concept drift) using statistical tests like Kolmogorov-Smirnov or Population Stability Index (PSI). When drift thresholds are exceeded, the system triggers automated alerts, falls back to conservative rules if necessary, logs production inferences for labeling, and initiates a validated retraining pipeline with updated ground-truth data.",
+    "keywords": ["data drift", "concept drift", "monitoring", "covariate shift", "retraining pipeline", "alerts", "distribution", "production", "ground truth"],
+    "explanation": "Tests real-world MLOps readiness and practical understanding beyond model training."
+  },
+  {
+    "id": 15,
+    "role": "Data Analyst",
+    "difficulty": "Easy",
+    "category": "Technical",
+    "topic": "SQL",
+    "question": "What is the difference between WHERE and HAVING clauses in SQL, and when do you use each?",
+    "expected_answer": "The WHERE clause filters individual records before any grouping or aggregation takes place, and cannot be used with aggregate functions like COUNT or SUM. The HAVING clause filters groups of records after the GROUP BY clause has aggregated them, and is specifically designed to filter results based on aggregate conditions, such as HAVING COUNT(*) > 5.",
+    "keywords": ["where", "having", "sql", "group by", "aggregate functions", "filter", "records", "grouping", "count", "sum"],
+    "explanation": "Essential SQL query logic question asked in almost all data analyst technical screenings."
+  },
+  {
+    "id": 16,
+    "role": "Data Analyst",
+    "difficulty": "Easy",
+    "category": "Technical",
+    "topic": "Data Analysis",
+    "question": "How do you handle missing or null values in a dataset during exploratory data analysis (EDA)?",
+    "expected_answer": "I handle missing values by first inspecting their distribution and determining if the data is Missing Completely at Random (MCAR), Missing at Random (MAR), or Missing Not at Random (MNAR). Depending on business context and missingness percentage, strategies include dropping rows or columns if missing data is negligible or excessive, imputing numerical values using mean, median, or KNN imputation, imputing categorical data using mode or a dedicated 'Unknown' category, or using indicator flags.",
+    "keywords": ["missing values", "null", "imputation", "median", "mean", "mode", "eda", "mcar", "mar", "distribution", "knn"],
+    "explanation": "Demonstrates practical data cleaning and thoughtful statistical methodology."
+  },
+  {
+    "id": 17,
+    "role": "Data Analyst",
+    "difficulty": "Medium",
+    "category": "Technical",
+    "topic": "SQL",
+    "question": "Explain SQL Window Functions (like ROW_NUMBER, RANK, DENSE_RANK) and how they differ from standard GROUP BY aggregations.",
+    "expected_answer": "Window functions perform calculations across a set of table rows related to the current row without collapsing them into a single summary row, preserving individual record granularity. They use the OVER() clause with PARTITION BY and ORDER BY. ROW_NUMBER assigns unique sequential integers; RANK assigns ranks with gaps on ties; and DENSE_RANK assigns consecutive ranks without gaps on ties.",
+    "keywords": ["window functions", "over", "partition by", "order by", "row_number", "rank", "dense_rank", "granularity", "group by"],
+    "explanation": "Window functions are a key benchmark separating junior analysts from proficient SQL analysts."
+  },
+  {
+    "id": 18,
+    "role": "Data Analyst",
+    "difficulty": "Medium",
+    "category": "Technical",
+    "topic": "Statistics",
+    "question": "What is A/B testing, and how do you determine if the difference between control and variant groups is statistically significant?",
+    "expected_answer": "A/B testing is a controlled experiment comparing two versions (control A and variant B) to determine which performs better on a specific metric. Statistical significance is evaluated by defining null and alternative hypotheses, choosing an appropriate test (such as a two-sample t-test or z-test for proportions), calculating the p-value, and verifying if the p-value is below the significance threshold alpha (commonly 0.05) with sufficient statistical power and sample size.",
+    "keywords": ["a/b testing", "statistical significance", "p-value", "hypothesis testing", "null hypothesis", "control", "variant", "sample size", "alpha"],
+    "explanation": "Crucial product analytics and experimentation concept for data analysts."
+  },
+  {
+    "id": 19,
+    "role": "Data Analyst",
+    "difficulty": "Hard",
+    "category": "Technical",
+    "topic": "Data Analysis",
+    "question": "What is Simpson's Paradox, and why is it dangerous in data analysis and business decision-making?",
+    "expected_answer": "Simpson's Paradox is a statistical phenomenon where a trend or relationship that appears across several different subgroups disappears or reverses when the groups are aggregated together. It is dangerous because analyzing only aggregated data can lead to false conclusions and poor business decisions, caused by an unobserved confounding variable that disproportionately weights the subgroup distributions.",
+    "keywords": ["simpson's paradox", "statistical phenomenon", "subgroups", "aggregated", "confounding variable", "trend reverses", "bias", "segmentation"],
+    "explanation": "Advanced statistical paradox testing deep critical thinking and analytical rigor."
+  },
+  {
+    "id": 20,
+    "role": "Data Analyst",
+    "difficulty": "Easy",
+    "category": "HR / Behavioral",
+    "topic": "HR Communication",
+    "question": "How do you communicate complex statistical insights or technical findings to non-technical business stakeholders?",
+    "expected_answer": "I communicate findings by leading with the business outcome or recommendation rather than complex mathematical formulas. I use clear visual dashboards with intuitive charts, avoid jargon, connect metrics directly to key performance indicators (KPIs) like revenue or retention, and provide concise executive summaries followed by supporting data if questions arise.",
+    "keywords": ["stakeholders", "communication", "visualizations", "business outcome", "kpis", "dashboards", "actionable insights", "executive summary"],
+    "explanation": "Stakeholder communication is one of the highest-weighted attributes in hiring data analysts."
+  },
+  {
+    "id": 21,
+    "role": "Data Analyst",
+    "difficulty": "Medium",
+    "category": "Mixed",
+    "topic": "SQL",
+    "question": "How do you design a Star Schema for a business data warehouse, and how does it compare to a 3rd Normal Form schema?",
+    "expected_answer": "A Star Schema organizes data into a central Fact table containing measurable numerical metrics (like sales revenue or quantity) and surrounding Dimension tables containing descriptive attributes (like date, store, or customer) linked by foreign keys. Unlike highly normalized 3NF schemas designed for transaction processing (OLTP) to eliminate redundancy, Star Schemas are intentionally denormalized to enable fast analytical queries (OLAP) with fewer complex joins.",
+    "keywords": ["star schema", "fact table", "dimension table", "data warehouse", "olap", "oltp", "normalization", "denormalized", "joins"],
+    "explanation": "Core data warehousing concept for analysts working with enterprise business intelligence systems."
+  }
+]

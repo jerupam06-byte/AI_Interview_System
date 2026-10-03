@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}AI-Powered Interview Preparation & Evaluation System | Placement Ready{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section style="padding: 5rem 0 4rem; text-align: center; position: relative; overflow: hidden;">
+  <div class="container container-narrow">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(37, 99, 235, 0.15); border: 1px solid rgba(37, 99, 235, 0.3); padding: 0.4rem 1rem; border-radius: 9999px; margin-bottom: 1.5rem;">
+      <span style="color: var(--cyan); font-weight: 700; font-size: 0.85rem;">MCA Campus Placement Ready</span>
+      <span style="color: var(--text-dim);">&bull;</span>
+      <span style="color: var(--text-muted); font-size: 0.85rem;">Deterministic NLP + AI Feedback</span>
+    </div>
+
+    <h1 style="font-size: 3.25rem; font-weight: 800; line-height: 1.15; margin-bottom: 1.25rem;">
+      Master Technical & HR Interviews with <span style="background: linear-gradient(135deg, #60A5FA, #22D3EE); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Precision</span>
+    </h1>
+
+    <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2.25rem; max-width: 650px; margin-left: auto; margin-right: auto;">
+      Practice role-specific interview questions, answer via text or voice, and receive transparent evaluation powered by TF-IDF, cosine similarity, keyword matching, and personalized <strong>Skill-Gap Detection</strong>.
+    </p>
+
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('interview.setup') }}" class="btn btn-primary btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Start Real Interview
+        </a>
+        <a href="{{ url_for('interview.setup') }}" class="btn btn-secondary btn-lg">
+          Try Practice Mode
+        </a>
+      {% else %}
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">
+          Start Practicing Free
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-lg">
+          Sign In to Dashboard
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Supported Roles Grid -->
+<section style="padding: 3rem 0; border-top: 1px solid var(--dark-border-subtle); border-bottom: 1px solid var(--dark-border-subtle); background: rgba(15, 23, 42, 0.4);">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <h3 style="font-size: 1.35rem; color: var(--text-main);">Targeted Placement Tracks</h3>
+      <p style="font-size: 0.9rem;">Curated interview banks aligned with top software hiring benchmarks</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+      <div class="card" style="border-top: 3px solid var(--primary);">
+        <h4 style="color: #60A5FA; margin-bottom: 0.5rem;">Python Developer</h4>
+        <p style="font-size: 0.875rem; margin-bottom: 1rem;">
+          Deep dive into CPython internals, GIL, decorators, memory management, garbage collection, and database optimizations.
+        </p>
+        <span class="badge badge-primary">Technical + HR + Mixed</span>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--cyan);">
+        <h4 style="color: #22D3EE; margin-bottom: 0.5rem;">AI / ML Engineer</h4>
+        <p style="font-size: 0.875rem; margin-bottom: 1rem;">
+          Tackle bias-variance tradeoffs, Transformers, self-attention, TF-IDF mechanics, MLOps, and model drift monitoring.
+        </p>
+        <span class="badge badge-cyan">Technical + HR + Mixed</span>
+      </div>
+
+      <div class="card" style="border-top: 3px solid var(--success);">
+        <h4 style="color: #4ADE80; margin-bottom: 0.5rem;">Data Analyst</h4>
+        <p style="font-size: 0.875rem; margin-bottom: 1rem;">
+          Excel in SQL Window functions, Star Schema modeling, A/B hypothesis testing, Simpson's paradox, and EDA imputation.
+        </p>
+        <span class="badge badge-success">Technical + HR + Mixed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section style="padding: 4.5rem 0;">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <span class="badge badge-cyan" style="margin-bottom: 0.75rem;">Structured Workflow</span>
+      <h2>How the AI Evaluation Engine Works</h2>
+      <p style="max-width: 600px; margin: 0.5rem auto 0;">Transparent, explainable scoring built for MCA placement interviews.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+      <div class="card" style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(37, 99, 235, 0.2); color: #60A5FA; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.25rem;">1</div>
+        <h4 style="margin-bottom: 0.5rem;">Select Role & Mode</h4>
+        <p style="font-size: 0.85rem;">Choose your target role, difficulty, category, and whether to test under timer pressure or practice without bounds.</p>
+      </div>
+
+      <div class="card" style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(6, 182, 212, 0.2); color: #22D3EE; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.25rem;">2</div>
+        <h4 style="margin-bottom: 0.5rem;">Text or Voice Input</h4>
+        <p style="font-size: 0.85rem;">Dictate your answer using the Web Speech API microphone or type thoughtfully in the distraction-free response editor.</p>
+      </div>
+
+      <div class="card" style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(34, 197, 94, 0.2); color: #4ADE80; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.25rem;">3</div>
+        <h4 style="margin-bottom: 0.5rem;">Deterministic NLP</h4>
+        <p style="font-size: 0.85rem;">Vectorized via TF-IDF, tested with Cosine Similarity (60%), multi-word keyword coverage (20%), and coherence sanity checks.</p>
+      </div>
+
+      <div class="card" style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(168, 85, 247, 0.2); color: #C084FC; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.25rem;">4</div>
+        <h4 style="margin-bottom: 0.5rem;">Skill-Gap Mapping</h4>
+        <p style="font-size: 0.85rem;">View demonstrated strengths versus missed concepts, categorized by skill area with concrete actionable revision steps.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section style="padding: 4rem 0; background: linear-gradient(180deg, transparent, rgba(37, 99, 235, 0.08));">
+  <div class="container container-narrow" style="text-align: center;">
+    <div class="card" style="padding: 3rem 2rem; border-color: rgba(6, 182, 212, 0.4); background: rgba(30, 41, 59, 0.9);">
+      <h2 style="margin-bottom: 0.75rem;">Ready to Ace Your Campus Placement?</h2>
+      <p style="margin-bottom: 1.75rem;">Build genuine confidence in technical depth, keyword delivery, and behavioral articulation.</p>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-cyan btn-lg">Create Free Candidate Account</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AI-Powered Interview Preparation & Evaluation System{% endblock %}</title>
+  
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js CDN for performance analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar" aria-label="Main Navigation">
+    <div class="container nav-container">
+      <a href="{{ url_for('main.index') }}" class="nav-brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+        <span>Interview<span style="color: var(--cyan);">Prep</span>.AI</span>
+        <span class="brand-badge">MCA Placement</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="{{ url_for('main.index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('main.about') }}" class="nav-link">About & Tech Stack</a></li>
+        {% if current_user.is_authenticated %}
+          <li><a href="{{ url_for('dashboard.dashboard') }}" class="nav-link">Dashboard</a></li>
+          <li><a href="{{ url_for('interview.setup') }}" class="nav-link">Start Interview</a></li>
+          <li><a href="{{ url_for('assistant.assistant') }}" class="nav-link">AI Assistant</a></li>
+          <li><a href="{{ url_for('resume.analyzer') }}" class="nav-link">Resume Analyzer</a></li>
+        {% endif %}
+      </ul>
+
+      <div class="nav-actions">
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('profile.profile') }}" class="btn btn-secondary btn-sm">
+            <span>{{ current_user.name.split()[0] }}</span>
+          </a>
+          <form action="{{ url_for('auth.logout') }}" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-outline btn-sm">Sign Out</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" class="btn btn-outline btn-sm">Sign In</a>
+          <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-sm">Get Started</a>
+        {% endif %}
+        <button id="mobile-menu-toggle" class="btn btn-secondary btn-sm" aria-label="Toggle Menu" style="display: none;">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash Alerts Container -->
+  <div class="container alerts-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category if category != 'message' else 'info' }}" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="alert-close" aria-label="Close alert">&times;</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Main Body Content -->
+  <main style="flex-grow: 1;">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>
+        <strong style="color: var(--text-main);">AI-Powered Interview Preparation & Evaluation System</strong>
+        <p style="font-size: 0.8rem; margin-top: 0.25rem;">
+          Primary MCA Campus Placement Portfolio Project &bull; Built with Flask, scikit-learn, PostgreSQL & Vercel
+        </p>
+      </div>
+      <div>
+        <p style="font-size: 0.8rem;">
+          Designed & Developed by <strong style="color: var(--cyan);">Jerusha Pamella Felix M.</strong> &copy; {{ current_year }}
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

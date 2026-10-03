@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}AI Interview Assistant | Mock Prep Coach{% endblock %}
+
+{% block content %}
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div style="margin-bottom: 1.5rem; padding-left: 0.5rem;">
+      <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700; letter-spacing: 0.05em;">Navigation</span>
+    </div>
+    <ul class="sidebar-nav">
+      <li>
+        <a href="{{ url_for('dashboard.dashboard') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('interview.setup') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start Interview
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('history.history') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Interview History
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('assistant.assistant') }}" class="sidebar-link active">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          AI Interview Assistant
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('resume.analyzer') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Resume Analyzer
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('profile.profile') }}" class="sidebar-link">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Candidate Profile
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <form action="{{ url_for('auth.logout') }}" method="POST">
+        <button type="submit" class="sidebar-link" style="width: 100%; border: none; background: transparent; cursor: pointer; color: var(--danger);">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="main-content">
+    <div style="margin-bottom: 1.5rem;">
+      <span class="badge badge-cyan" style="margin-bottom: 0.35rem;">24/7 AI Placement Mentor</span>
+      <h1 style="font-size: 1.85rem;">Interview Preparation Assistant</h1>
+      <p>Ask technical questions on Python, SQL, DSA, AI/ML, or request help framing STAR-method behavioral responses.</p>
+    </div>
+
+    <!-- Chat Card Container -->
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="chat-window">
+        <!-- Messages Area -->
+        <div id="chat-messages" class="chat-messages">
+          <!-- Welcome message -->
+          <div class="chat-bubble assistant">
+            👋 <strong>Hello {{ current_user.name }}!</strong> I am your AI Interview Coach.
+            <br><br>
+            I can help you review concept definitions, explain tricky technical interview topics (like <code>GIL</code>, <code>Star Schema</code>, or <code>Transformers</code>), or critique your sample answers. What would you like to practice today?
+          </div>
+
+          <!-- Historical messages -->
+          {% for item in history %}
+            <div class="chat-bubble user">
+              {{ item.user_message }}
+            </div>
+            <div class="chat-bubble assistant">
+              {{ item.assistant_response }}
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Input Bar -->
+        <form id="chat-form" class="chat-input-bar">
+          <input 
+            type="text" 
+            id="chat-input" 
+            class="form-control" 
+            placeholder="Ask a technical or behavioral interview question (e.g. 'How do I answer questions about Python generators?')..."
+            autocomplete="off"
+            required
+          >
+          <button type="submit" id="chat-send-btn" class="btn btn-primary" style="padding: 0 1.5rem;">
+            Send
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+{% endblock %}

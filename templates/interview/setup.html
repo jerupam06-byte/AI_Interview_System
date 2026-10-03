@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Setup | AI-Powered Interview System{% endblock %}
+
+{% block content %}
+<div class="container container-narrow" style="padding: 3rem 1.5rem 5rem;">
+  <div style="text-align: center; margin-bottom: 2.5rem;">
+    <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Interview Configuration</span>
+    <h1>Configure Your Mock Interview</h1>
+    <p>Select your track, difficulty level, category focus, and test mode.</p>
+  </div>
+
+  <div class="card" style="padding: 2.5rem;">
+    <form method="POST" action="{{ url_for('interview.start') }}">
+      
+      <!-- Role Selection -->
+      <div class="form-group" style="margin-bottom: 1.75rem;">
+        <label class="form-label" style="font-size: 1rem;">1. Select Target Job Role</label>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+          <label class="card" style="padding: 1.25rem; cursor: pointer; border-color: var(--dark-border); text-align: center; display: block;">
+            <input type="radio" name="role" value="Python Developer" checked style="margin-bottom: 0.5rem;">
+            <div style="font-weight: 700; color: #60A5FA;">Python Developer</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Core CPython, GIL, OOP, ORM & Concurrency</div>
+          </label>
+
+          <label class="card" style="padding: 1.25rem; cursor: pointer; border-color: var(--dark-border); text-align: center; display: block;">
+            <input type="radio" name="role" value="AI/ML Engineer" style="margin-bottom: 0.5rem;">
+            <div style="font-weight: 700; color: #22D3EE;">AI/ML Engineer</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Transformers, NLP, Bias-Variance, MLOps</div>
+          </label>
+
+          <label class="card" style="padding: 1.25rem; cursor: pointer; border-color: var(--dark-border); text-align: center; display: block;">
+            <input type="radio" name="role" value="Data Analyst" style="margin-bottom: 0.5rem;">
+            <div style="font-weight: 700; color: #4ADE80;">Data Analyst</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">SQL Windows, Star Schema, A/B & Stats</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Difficulty Level -->
+      <div class="form-group" style="margin-bottom: 1.75rem;">
+        <label for="difficulty" class="form-label" style="font-size: 1rem;">2. Difficulty Level</label>
+        <select name="difficulty" id="difficulty" class="form-control">
+          <option value="Medium" selected>Medium (Standard Campus Placement Round)</option>
+          <option value="Easy">Easy (Foundational Concept Screening)</option>
+          <option value="Hard">Hard (Deep Technical & Edge Case Round)</option>
+          <option value="All">All Difficulties (Adaptive Mix)</option>
+        </select>
+      </div>
+
+      <!-- Interview Category -->
+      <div class="form-group" style="margin-bottom: 1.75rem;">
+        <label for="category" class="form-label" style="font-size: 1rem;">3. Question Category</label>
+        <select name="category" id="category" class="form-control">
+          <option value="Technical" selected>Technical Only (Domain Concepts & Architecture)</option>
+          <option value="HR / Behavioral">HR / Behavioral (STAR Method, Teamwork, Leadership)</option>
+          <option value="Mixed">Mixed (Comprehensive Technical + HR Combination)</option>
+        </select>
+      </div>
+
+      <!-- Mode Selector (Practice vs Real) -->
+      <div class="form-group" style="margin-bottom: 1.75rem;">
+        <label class="form-label" style="font-size: 1rem;">4. Assessment Mode</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+          <label class="card" style="padding: 1.25rem; cursor: pointer; border-color: var(--dark-border);">
+            <input type="radio" name="mode" value="practice" checked style="margin-bottom: 0.5rem;">
+            <div style="font-weight: 700; color: #60A5FA;">Practice Mode</div>
+            <p style="font-size: 0.8rem; margin-top: 0.25rem;">
+              No timer pressure. Perfect for learning, practicing voice dictation, and iterative refinement.
+            </p>
+          </label>
+
+          <label class="card" style="padding: 1.25rem; cursor: pointer; border-color: var(--dark-border);">
+            <input type="radio" name="mode" value="real" style="margin-bottom: 0.5rem;">
+            <div style="font-weight: 700; color: #F87171;">Real Interview Mode</div>
+            <p style="font-size: 0.8rem; margin-top: 0.25rem;">
+              Timed per question (120s countdown). Expected answers hidden until full submission. Simulates actual placement drive.
+            </p>
+          </label>
+        </div>
+      </div>
+
+      <!-- Question Count -->
+      <div class="form-group" style="margin-bottom: 2rem;">
+        <label for="count" class="form-label" style="font-size: 1rem;">5. Question Count</label>
+        <select name="count" id="count" class="form-control">
+          <option value="3">3 Questions (Quick Sprint - ~6 mins)</option>
+          <option value="5" selected>5 Questions (Standard Mock - ~10 mins)</option>
+          <option value="8">8 Questions (Comprehensive Evaluation)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        Launch Interview Session
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

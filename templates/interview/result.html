@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Results & Gap Analysis | Session #{{ interview.id }}{% endblock %}
+
+{% block content %}
+<div class="container container-wide" style="padding: 3rem 1.5rem 5rem;">
+  
+  <!-- Header -->
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div>
+      <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Evaluation Completed</span>
+      <h1>Interview Results & Gap Analysis</h1>
+      <p>Session #{{ interview.id }} &bull; {{ interview.role }} ({{ interview.difficulty }}) &bull; {{ interview.mode|capitalize }} Mode</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="{{ url_for('interview.review', id=interview.id) }}" class="btn btn-cyan btn-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Detailed Review (Side-by-Side)
+      </a>
+      <a href="{{ url_for('interview.setup') }}" class="btn btn-outline btn-lg">
+        Try Another Session
+      </a>
+    </div>
+  </div>
+
+  <!-- Score Summary Hero Grid -->
+  <div class="metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 2rem;">
+    <!-- Final Clamped Score -->
+    <div class="metric-card" style="border-color: rgba(6, 182, 212, 0.4); background: rgba(30, 41, 59, 0.85);">
+      <div class="metric-icon-wrap icon-cyan">🎯</div>
+      <div class="metric-data">
+        <h4>Overall Placement Score</h4>
+        <div class="metric-value" style="color: var(--cyan);">{{ final_score }}%</div>
+        <span class="badge {{ get_score_badge_class(final_score) }}" style="margin-top: 0.35rem;">
+          {{ get_score_label(final_score) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Semantic Similarity -->
+    <div class="metric-card">
+      <div class="metric-icon-wrap icon-blue">📐</div>
+      <div class="metric-data">
+        <h4>Semantic Similarity (60%)</h4>
+        <div class="metric-value">{{ avg_similarity }}%</div>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">Cosine TF-IDF Vector</span>
+      </div>
+    </div>
+
+    <!-- Keyword Coverage -->
+    <div class="metric-card">
+      <div class="metric-icon-wrap icon-green">🔑</div>
+      <div class="metric-data">
+        <h4>Keyword Coverage (20%)</h4>
+        <div class="metric-value">{{ avg_keywords }}%</div>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">Technical Terminology</span>
+      </div>
+    </div>
+
+    <!-- Total Questions -->
+    <div class="metric-card">
+      <div class="metric-icon-wrap icon-purple">📝</div>
+      <div class="metric-data">
+        <h4>Questions Answered</h4>
+        <div class="metric-value">{{ interview.answers|length }} / {{ interview.total_questions }}</div>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">100% Submission Rate</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       NEW DIFFERENTIATING FEATURE: INTERVIEW GAP DETECTOR MAP
+       ======================================================== -->
+  <div class="card" style="margin-bottom: 2.5rem; border: 1px solid rgba(6, 182, 212, 0.3); background: rgba(15, 23, 42, 0.85);">
+    <div class="card-header" style="border-bottom: 1px solid var(--dark-border); padding-bottom: 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <div>
+          <span class="badge badge-cyan" style="margin-bottom: 0.4rem;">Placement Innovation Feature</span>
+          <h2 style="font-size: 1.5rem;">Personalized Interview Gap Detector</h2>
+          <p style="font-size: 0.9rem;">
+            Identifies demonstrated competencies versus missing concepts and translates your interview answers into an actionable study plan.
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.8rem; color: var(--text-dim);">Identified Knowledge Gaps:</span>
+          <div style="font-size: 1.25rem; font-weight: 700; color: #FCA5A5;">
+            {{ gap_analysis.total_gaps_count }} Concepts to Revise
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill Areas Radar Breakdown -->
+    <div style="margin: 1.5rem 0;">
+      <h4 style="font-size: 1rem; margin-bottom: 1rem; color: var(--text-main);">Proficiency Breakdown by Skill Area:</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+        {% for skill, info in gap_analysis.skill_breakdown.items() %}
+          <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid var(--dark-border); border-radius: var(--radius-md); padding: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <strong style="font-size: 0.9rem; color: var(--text-main);">{{ skill }}</strong>
+              <span class="badge {% if info.score >= 75 %}badge-success{% elif info.score >= 50 %}badge-warning{% else %}badge-danger{% endif %}">
+                {{ info.score }}%
+              </span>
+            </div>
+            <div style="width: 100%; height: 6px; background: rgba(15, 23, 42, 0.8); border-radius: 9999px; overflow: hidden; margin-bottom: 0.5rem;">
+              <div style="height: 100%; width: {{ info.score }}%; background: linear-gradient(90deg, var(--primary), var(--cyan));"></div>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+              <span>Demonstrated: {{ info.demonstrated_count }}</span>
+              <span>Missing: {{ info.missing_count }}</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Visual Skill Gap Map (Strengths vs. Needs Improvement vs. Critical Gaps) -->
+    <div class="gap-map-container">
+      <!-- Demonstrated Strengths -->
+      <div class="gap-column" style="border-top: 3px solid var(--success);">
+        <div class="gap-column-header">
+          <span style="color: #86EFAC;">✅ Demonstrated Knowledge (Strengths)</span>
+          <span class="badge badge-success">{{ gap_analysis.demonstrated|length }} Concepts</span>
+        </div>
+        {% if gap_analysis.demonstrated %}
+          <div class="concept-chips-wrap">
+            {% for item in gap_analysis.demonstrated %}
+              <span class="concept-chip chip-success" title="{{ item.skill_area }} &bull; Solved with {{ item.score }}%">
+                {{ item.concept }}
+              </span>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p style="font-size: 0.85rem; color: var(--text-dim);">No concepts strongly demonstrated in this session. Take time to review key foundations.</p>
+        {% endif %}
+      </div>
+
+      <!-- Priority Critical Gaps -->
+      <div class="gap-column" style="border-top: 3px solid var(--danger);">
+        <div class="gap-column-header">
+          <span style="color: #FCA5A5;">🚨 Priority Gaps (Missing / Needs Revision)</span>
+          <span class="badge badge-danger">{{ gap_analysis.priority_gaps|length }} Concepts</span>
+        </div>
+        {% if gap_analysis.priority_gaps %}
+          <div class="concept-chips-wrap">
+            {% for item in gap_analysis.priority_gaps %}
+              <span class="concept-chip chip-danger" title="{{ item.skill_area }} &bull; Omitted or incomplete">
+                {{ item.concept }}
+              </span>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p style="font-size: 0.85rem; color: #86EFAC;">Excellent! No critical concept gaps were detected in this round.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Targeted Practice Recommendations Checklist -->
+    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--dark-border-subtle);">
+      <h4 style="font-size: 1rem; margin-bottom: 1rem; color: var(--cyan);">Targeted Revision Action Plan:</h4>
+      {% for rec in gap_analysis.recommendations %}
+        <div class="recommendation-item">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <strong style="color: var(--text-main);">{{ rec.skill_area }} Focus</strong>
+            <span class="badge {% if rec.priority == 'High' %}badge-danger{% elif rec.priority == 'Medium' %}badge-warning{% else %}badge-cyan{% endif %}">
+              {{ rec.priority }} Priority
+            </span>
+          </div>
+          <p style="margin-bottom: 0; font-size: 0.85rem; color: var(--text-muted);">{{ rec.recommendation }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Question-by-Question Score Breakdown -->
+  <div class="card" style="margin-bottom: 2rem;">
+    <div class="card-header">
+      <h3 class="card-title">Question-wise Performance Breakdown</h3>
+      <p class="card-subtitle">Transparent scoring components calculated for each answered prompt</p>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Question Prompt</th>
+            <th>Similarity (60%)</th>
+            <th>Keywords (20%)</th>
+            <th>Final Score</th>
+            <th>Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in interview.answers %}
+            <tr>
+              <td><strong>Q{{ loop.index }}</strong></td>
+              <td style="max-width: 450px;">
+                <div style="font-weight: 500;">{{ a.question.question }}</div>
+                <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem;">
+                  Topic: {{ a.question.topic }} &bull; {{ a.question.difficulty }}
+                </div>
+              </td>
+              <td><span style="font-family: monospace;">{{ a.similarity_score }}%</span></td>
+              <td><span style="font-family: monospace;">{{ a.keyword_score }}%</span></td>
+              <td>
+                <span class="badge {{ get_score_badge_class(a.final_question_score) }}">
+                  {{ a.final_question_score }}%
+                </span>
+              </td>
+              <td>
+                <a href="{{ url_for('interview.review', id=interview.id) }}#q-{{ a.id }}" class="btn btn-secondary btn-sm">
+                  Examine &rarr;
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bottom Action Buttons -->
+  <div style="text-align: center; margin-top: 3rem;">
+    <a href="{{ url_for('interview.review', id=interview.id) }}" class="btn btn-cyan btn-lg" style="margin-right: 1rem;">
+      Open Detailed Candidate vs Expected Review
+    </a>
+    <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary btn-lg">
+      Return to Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

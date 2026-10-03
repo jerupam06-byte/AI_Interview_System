@@ -462,3 +462,62 @@
   background: rgba(30, 41, 59, 0.8);
   border-top: 1px solid var(--dark-border);
 }
+
+/* Mobile Responsive Dashboard & Session Layout */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--dark-border);
+    padding: 1rem;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .sidebar-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .main-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .readiness-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .readiness-bar-bg {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .input-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .question-card {
+    padding: 1.25rem;
+  }
+}
+

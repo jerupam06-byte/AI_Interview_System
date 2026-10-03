@@ -392,11 +392,21 @@ textarea.form-control {
   gap: 1rem;
 }
 
+/* Mobile Navigation */
+#mobile-menu-toggle {
+  display: none;
+}
+
 /* Responsive Utilities */
 @media (max-width: 768px) {
+  #mobile-menu-toggle {
+    display: inline-flex;
+  }
+
   .nav-links {
     display: none;
   }
+
   .nav-links.mobile-open {
     display: flex;
     flex-direction: column;
@@ -407,5 +417,8 @@ textarea.form-control {
     background: var(--dark-surface);
     padding: 1.5rem;
     border-bottom: 1px solid var(--dark-border);
+    box-shadow: var(--shadow-lg);
+    gap: 1rem;
   }
 }
+

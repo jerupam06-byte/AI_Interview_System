@@ -1,0 +1,28 @@
+{
+  "name": "interview-system",
+  "version": "1.0.0",
+  "description": "**Master Placement-Ready Web Application • Flask + PostgreSQL + NLP + OpenAI • Vercel Deployment**   *Author: Jerusha Pamella Felix M. (MCA Campus Placement Portfolio)*",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerupam06-byte/AI_Interview_System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jerupam06-byte/AI_Interview_System/issues"
+  },
+  "homepage": "https://github.com/jerupam06-byte/AI_Interview_System#readme",
+  "devDependencies": {
+    "@neon/config": "^1.8.3",
+    "@neon/env": "^1.5.0"
+  }
+}

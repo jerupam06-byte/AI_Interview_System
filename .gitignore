@@ -14,3 +14,4 @@ instance/
 .DS_Store
 .vercel/
 *.log
+node_modules/

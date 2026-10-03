@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from config import config_by_name, Config
 from models import db, User
 from routes import register_blueprints
-from services.question_service import seed_questions_if_needed
+from services.question_service import seed_questions_if_needed, seed_default_users_if_needed
 from utils.helpers import format_datetime, get_score_badge_class, get_score_label
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -72,6 +72,7 @@ def create_app(config_name: str = None) -> Flask:
         try:
             db.create_all()
             seed_questions_if_needed()
+            seed_default_users_if_needed()
         except Exception as e:
             # In some serverless/read-only build environments, db creation happens via external migration
             print(f"[Warning] Database initialization note: {e}")

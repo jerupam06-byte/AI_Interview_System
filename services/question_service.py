@@ -39,6 +39,21 @@ def seed_questions_if_needed(app=None) -> int:
     return added
 
 
+def seed_default_users_if_needed():
+    """Seeds default demo and admin credentials if user table is empty."""
+    from models import User
+    try:
+        if User.query.count() == 0:
+            admin = User(name="Jerusha Pamella Felix M. (Admin)", email="admin@placement.edu")
+            admin.set_password("Admin@2026")
+            candidate = User(name="Jerusha Felix", email="candidate@placement.edu")
+            candidate.set_password("Candidate@2026")
+            db.session.add_all([admin, candidate])
+            db.session.commit()
+    except Exception as e:
+        print(f"[Warning] User seeding note: {e}")
+
+
 def get_questions_for_interview(
     role: str,
     difficulty: str,

@@ -199,7 +199,7 @@ Also includes `chat_history` (assistant conversations) and `resume_analysis` (pa
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/AI_Interview_System.git
+git clone https://github.com/jerupam06-byte/AI_Interview_System.git
 cd AI_Interview_System
 ```
 
@@ -297,5 +297,7 @@ Questions candidates are frequently asked regarding this project:
 ## 11. Author & Acknowledgements
 
 - **Developer:** Jerusha Pamella Felix M.
+- **GitHub Profile:** [@jerupam06-byte](https://github.com/jerupam06-byte)
+- **Repository:** [AI_Interview_System](https://github.com/jerupam06-byte/AI_Interview_System)
 - **Degree:** Master of Computer Applications (MCA)
 - **Portfolio Project Focus:** AI Engineering, Full-Stack Python, Placement Preparation

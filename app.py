@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from flask import Flask, render_template
 from flask_login import LoginManager
 from config import config_by_name, Config
@@ -6,6 +7,8 @@ from models import db, User
 from routes import register_blueprints
 from services.question_service import seed_questions_if_needed
 from utils.helpers import format_datetime, get_score_badge_class, get_score_label
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
 def create_app(config_name: str = None) -> Flask:
@@ -15,7 +18,11 @@ def create_app(config_name: str = None) -> Flask:
         if config_name not in config_by_name:
             config_name = "development"
 
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        template_folder=str(BASE_DIR / "templates"),
+        static_folder=str(BASE_DIR / "static"),
+    )
     app.config.from_object(config_by_name[config_name])
 
     # Initialize database
